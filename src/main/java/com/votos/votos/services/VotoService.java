@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import ch.qos.logback.core.pattern.Converter;
 import ch.qos.logback.core.pattern.ConverterUtil;
+import javassist.NotFoundException;
 
 import com.votos.votos.Request.VotoRequest;
 import com.votos.votos.model.Pauta;
@@ -48,6 +49,13 @@ public class VotoService {
 		Integer votosumarno = 0;
 
 		Optional<Pauta> pauta = repositorypauta.findById(request.getPauta().getId());
+		if(!pauta.isPresent()){
+			try {
+				throw new NotFoundException("Pauta no encontrada");
+			} catch (NotFoundException e) {
+				
+			}
+		}
 		if (request.getVoto()=="SIM"){
 			votosumarsi =	pauta.get().getVotosSim()+1;
 			pauta.get().setVotosSim(votosumarsi);
@@ -61,7 +69,8 @@ public class VotoService {
 			Integer total=votosumarno+votosumarsi;
 			pauta.get().setVotosTotais(total);
 
-		}
+		
+	}
 		Voto novo = converter.fromEntity(request);
 		
 		repository.save(novo);
