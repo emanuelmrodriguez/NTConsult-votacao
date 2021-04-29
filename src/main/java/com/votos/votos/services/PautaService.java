@@ -1,10 +1,17 @@
 package com.votos.votos.services;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.hibernate.bytecode.internal.javassist.BulkAccessorException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javassist.NotFoundException;
+
+import com.google.common.util.concurrent.ExecutionError;
+import com.votos.votos.Response.PautaResponse;
 import com.votos.votos.model.Asociado;
 import com.votos.votos.model.Pauta;
 import com.votos.votos.model.Voto;
@@ -35,11 +42,18 @@ public class PautaService {
 		}
 	}
 	
-	public List<Pauta> getAllPauta(){
-		
-		List<Pauta> list = repository.findAll();
-		
-		return list;
+	public PautaResponse listarPauta (Long id) {
+		Optional<Pauta> pauta = repository.findById(id);
+		if(!pauta.isPresent()){
+			try {
+				throw new NotFoundException("Pauta no encontrada");
+			} catch (NotFoundException e) {
+				
+			}
+		}
+		PautaResponse retorno = new PautaResponse();
+		retorno.convertePauta(pauta.get());
+		return retorno;
 	}
 	
 

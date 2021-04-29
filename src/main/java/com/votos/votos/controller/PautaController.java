@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.votos.votos.Response.PautaResponse;
 import com.votos.votos.model.Pauta;
 import com.votos.votos.model.Voto;
 import com.votos.votos.services.PautaService;
@@ -34,29 +35,12 @@ public class PautaController {
 		return service.inserirPauta(pauta);
 	}
 	
-	@PutMapping
-	public Pauta update(@RequestBody Pauta pauta) {
-		return service.inserirPauta(pauta);
+	
+	@GetMapping("/getByid")
+	public PautaResponse getByid(@PathVariable Long id) {
+		return service.listarPauta(id);
 	}
 	
-	@GetMapping("/getByid/{id}")
-	public Pauta getByid(@PathVariable Long id) {
-		return service.buscarPauta(id);
-	}
-	@GetMapping
-	public List<Pauta> getAll() {
-		return service.getAllPauta();
-	}
-	
-	@DeleteMapping("/deleteByid/{id}")
-	public String deleteByid(@PathVariable Long id) {
-		return service.deletarPauta(id);
-	}
-	
-	@PatchMapping
-	public Pauta patchUpdate(@RequestBody Pauta pauta) {
-		return service.inserirPauta(pauta);
-	}
 	
 	
 
